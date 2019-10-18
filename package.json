@@ -1,0 +1,26 @@
+{
+  "name": "bz-geetest",
+  "version": "0.1.0",
+  "description": "播种网极验验证码模块",
+  "main": "dist/bz-geetest.umd.js",
+  "module": "dist/bz-geetest.esm.js",
+  "scripts": {
+    "build": "node ./build/build.js",
+    "lint": "eslint ./src/index.js"
+  },
+  "author": "PJJ",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "rollup": "^1.24.0",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "uglify-js": "^3.6.2"
+  },
+  "dependencies": {
+    "object-assign": "^4.1.1"
+  }
+}
