@@ -58,26 +58,6 @@ script 标签引用极验
 <script src="https://static.geetest.com/static/tools/gt.js"></script>
 ```
 
-css 样式
-
-``` css
-.geetest-box {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.geetest-box__main {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-```
-
 ### module模式
 
 ``` js

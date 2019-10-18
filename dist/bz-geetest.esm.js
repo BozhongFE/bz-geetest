@@ -3,29 +3,30 @@ import ObjectAssign from 'object-assign';
 Object.assign = ObjectAssign;
 
 function getLink(prefix, productPrefix) {
-  const { host } = window.location;
-  const prodPrefix = productPrefix || prefix;
+  var ref = window.location;
+  var host = ref.host;
+  var prodPrefix = productPrefix || prefix;
   if (host.indexOf('office') !== -1) {
-    return `//${prefix}.office.bzdev.net`;
+    return ("//" + prefix + ".office.bzdev.net");
   }
   if (host.indexOf('online') !== -1) {
-    return `//${prefix}.online.seedit.cc`;
+    return ("//" + prefix + ".online.seedit.cc");
   }
-  return `//${prodPrefix}.bozhong.com`;
+  return ("//" + prodPrefix + ".bozhong.com");
 }
 
-let num = 1;
-const api = {
-  token: `https://${getLink('bbs')}/restful/misc/token.jsonp`,
-  geetest: `https://${getLink('bbs')}/restful/misc/geetest.jsonp`,
+var num = 1;
+var api = {
+  token: ("https://" + (getLink('bbs')) + "/restful/misc/token.jsonp"),
+  geetest: ("https://" + (getLink('bbs')) + "/restful/misc/geetest.jsonp"),
 };
 // 创建一个 jsonp 请求
 function jsonp(url, callbackN, callback) {
   num += 1;
-  const callbackName = callbackN + num;
-  const headEl = document.getElementsByTagName('head')[0];
-  const script = document.createElement('script');
-  const scriptUrl = `${url}&__c=${callbackName}`;
+  var callbackName = callbackN + num;
+  var headEl = document.getElementsByTagName('head')[0];
+  var script = document.createElement('script');
+  var scriptUrl = url + "&__c=" + callbackName;
   script.src = scriptUrl;
   headEl.appendChild(script);
   window[callbackName] = function success(json) {
@@ -36,23 +37,23 @@ function jsonp(url, callbackN, callback) {
 }
 // 生成验证码
 function getGeetest(token, options) {
-  jsonp(`${api.geetest}?token=${token}`, 'restful_misc_geetest_', (data) => {
+  jsonp(((api.geetest) + "?token=" + token), 'restful_misc_geetest_', function (data) {
     if (data.error_code === 0) {
-      const initOptions = {
+      var initOptions = {
         gt: data.data.gt,
         challenge: data.data.challenge,
         offline: !data.data.success, // 表示用户后台检测极验服务器是否宕机，一般不需要关注
       };
-      const geetestOps = Object.assign(initOptions, options.geetestOptions);
+      var geetestOps = Object.assign(initOptions, options.geetestOptions);
       // 使用initGeetest接口
       // 参数1：配置参数
       // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
-      initGeetest(geetestOps, (captchaObj) => {
-        const body = document.getElementsByTagName('body')[0];
-        const geetestBox = document.createElement('div');
-        const geetestBoxMain = document.createElement('div');
-        const geetestBoxCssText = 'position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);';
-        const geetestBoxMainCssText = 'position: absolute;left: 50%;top: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);';
+      initGeetest(geetestOps, function (captchaObj) {
+        var body = document.getElementsByTagName('body')[0];
+        var geetestBox = document.createElement('div');
+        var geetestBoxMain = document.createElement('div');
+        var geetestBoxCssText = 'position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);';
+        var geetestBoxMainCssText = 'position: absolute;left: 50%;top: 50%;-webkit-transform: translate(-50%, -50%);transform: translate(-50%, -50%);';
         geetestBox.style.cssText = geetestBoxCssText;
         geetestBox.setAttribute('style', geetestBoxCssText);
         geetestBoxMain.style.cssText = geetestBoxMainCssText;
@@ -62,8 +63,8 @@ function getGeetest(token, options) {
         geetestBox.appendChild(geetestBoxMain);
         body.appendChild(geetestBox);
         captchaObj.appendTo('.geetest-box__main');
-        captchaObj.onSuccess(() => {
-          setTimeout(() => {
+        captchaObj.onSuccess(function () {
+          setTimeout(function () {
             body.removeChild(geetestBox);
           }, 1000);
           options.fn();
@@ -76,7 +77,7 @@ function getGeetest(token, options) {
 }
 // 请求token
 function getToken(options) {
-  jsonp(`${api.token}?type=${options.tokenType}`, 'restful_misc_token_', (data) => {
+  jsonp(((api.token) + "?type=" + (options.tokenType)), 'restful_misc_token_', function (data) {
     if (data.error_code === 0) {
       getGeetest(data.data.token, options);
     } else {
@@ -86,19 +87,21 @@ function getToken(options) {
 }
 // 抛出方法
 function geetest(options) {
-  const defaultOptions = {
+  var defaultOptions = {
     tokenType: 'geetest',
     geetestOptions: {
       product: 'embed',
     },
-    fn: () => {
+    fn: function () {
       console.log('回调成功！');
     },
   };
-  const opts = Object.assign(defaultOptions, options);
+  var opts = Object.assign(defaultOptions, options);
   getToken(opts);
 }
 
-export default {
-  geetest,
+var index = {
+  geetest: geetest,
 };
+
+export default index;
