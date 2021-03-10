@@ -13,12 +13,35 @@
     var host = ref.host;
     var prodPrefix = productPrefix || prefix;
     if (host.indexOf('office') !== -1) {
-      return ("//" + prefix + ".office.bzdev.net");
+      return (prefix + ".office.bzdev.net");
     }
     if (host.indexOf('online') !== -1) {
-      return ("//" + prefix + ".online.seedit.cc");
+      return (prefix + ".online.seedit.cc");
     }
-    return ("//" + prodPrefix + ".bozhong.com");
+    return (prodPrefix + ".bozhong.com");
+  }
+  // 兼容低版本浏览器
+  if (typeof Object.assign != 'function') {
+    Object.assign = function(target) {
+      var arguments$1 = arguments;
+
+      if (target == null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      target = Object(target);
+      for (var index = 1; index < arguments.length; index++) {
+        var source = arguments$1[index];
+        if (source != null) {
+          for (var key in source) {
+            if (Object.prototype.hasOwnProperty.call(source, key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+      }
+      return target;
+    };
   }
 
   var num = 1;
@@ -69,11 +92,22 @@
           geetestBox.appendChild(geetestBoxMain);
           body.appendChild(geetestBox);
           captchaObj.appendTo('.geetest-box__main');
+          // v0.2.0 统一接受外部方法作为回调
+          var loop = function ( key ) {
+            if (Object.prototype.toString.call(options[key]) === '[object Function]'
+              && Object.prototype.toString.call(captchaObj[key]) === '[object Function]') {
+              captchaObj[key](function () {
+                options[key](captchaObj);
+              });
+            }
+          };
+
+          for (var key in options) loop( key );
           captchaObj.onSuccess(function () {
             setTimeout(function () {
               body.removeChild(geetestBox);
             }, 1000);
-            options.fn();
+            options.onSuccess && options.onSuccess(captchaObj);
           });
         });
       } else {
@@ -98,7 +132,7 @@
       geetestOptions: {
         product: 'embed',
       },
-      fn: function () {
+      onSuccess: function () {
         console.log('回调成功！');
       },
     };

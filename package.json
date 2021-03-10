@@ -1,6 +1,6 @@
 {
-  "name": "bz-geetest",
-  "version": "0.1.0",
+  "name": "@bz/geetest",
+  "version": "0.2.0",
   "description": "播种网极验验证码模块",
   "main": "dist/bz-geetest.umd.js",
   "module": "dist/bz-geetest.esm.js",

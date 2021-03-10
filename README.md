@@ -2,6 +2,14 @@
 
 播种网极验验证码模块
 
+## 版本
+
+| 版本号 |      |
+| ------ | ---- |
+| 0.1.0  | A  极验验证码插件    |
+| 0.2.0  | F  兼容浏览器调用 |
+|        | A  统一使用captchaObj对象的函数名作为外部传入函数，同时返回captchaObj对象作为参数 |
+
 ## 打包
 
 ``` shell
@@ -48,7 +56,11 @@ npm run build
 
   > 更多接口参考：https://docs.geetest.com/install/apirefer/api/web
 
-- `fn` （Function）验证成功回调
+- ~~`fn` （Function）验证成功回调~~ （v0.1.0）
+
+- 统一使用captchaObj对象的函数名作为外部传入函数，同时返回captchaObj对象作为参数（v0.2.0）
+
+  > onError、onFail、onReady、onRefresh、onSuccess等
 
 ## Example
 
@@ -68,7 +80,7 @@ script 标签引用极验
     geetestOptions: {
       product: 'embed'
     },
-    fn: function() {
+    onSuccess: function() {
       console.log('成功');
     }
   });
@@ -85,7 +97,7 @@ script 标签引用极验
     geetestOptions: {
       product: 'embed'
     },
-    fn: function() {
+    onSuccess: function() {
       console.log('成功');
     }
   });
@@ -103,14 +115,10 @@ script 标签引用极验
       geetestOptions: {
         product: 'embed'
       },
-      fn: function() {
+      onSuccess: function() {
         console.log('成功');
       }                                   
     });
   });
 </script>
 ```
-
-## demo
-
-[index](./index.html)
